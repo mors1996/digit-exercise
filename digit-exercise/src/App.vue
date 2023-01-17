@@ -1,7 +1,8 @@
 <template>
-  <v-app>
-    <v-row>
-      <v-col cols="4" class="black" style="overflow-y: scroll; height: 100vh">
+  <v-app style="height: 100%">
+    <v-row style="height: 5vh;"></v-row>
+    <v-row style="height: 90vh;" >
+      <v-col cols="4" class="black" style="overflow-y: scroll; height: 100%">
         <v-row v-for="(img, ix) in imageSrcArr" v-bind:key="ix">
           <v-spacer></v-spacer>
           <v-col>
@@ -11,14 +12,14 @@
               style="width: 80%"
               class=""
             >
-              Image {{ ix }}
+              Image {{ ix +1 }}
             </v-btn>
             <v-btn
-              class="white"
+              class="red"
               v-if="selectedImg == imageSrcArr[ix]"
               style="width: 80%"
             >
-              Image {{ ix }}
+              Image {{ ix +1}}
             </v-btn> </v-col
           ><v-spacer></v-spacer>
         </v-row>
@@ -26,11 +27,11 @@
       <v-col cols="8" class="grey">
         <v-row
           ><v-toolbar
-            ><v-toolbar-title class="mx-auto"><a :href="selectedImg.photographerUrl">{{
+            ><v-toolbar-title    class="mx-auto clickable" @click="goTo(selectedImg.photographer_url)">{{
               selectedImg.photographer == null
                 ? "No photographer"
                 : selectedImg.photographer
-            }}</a></v-toolbar-title></v-toolbar
+            }}</v-toolbar-title></v-toolbar
           ></v-row
         >
         <v-row
@@ -54,10 +55,11 @@
           <v-spacer></v-spacer>
           <v-col cols="8"
             ><v-img
+            contain
               sizes="200px"
               width="100%"
-              height="50vh"
-              :src="selectedImg.src.medium"
+              height="40vh"
+              :src="selectedImg.src.medium!=null?selectedImg.src.medium:''"
             ></v-img
           ></v-col>
           <v-spacer></v-spacer>
@@ -65,18 +67,19 @@
         <v-row>
           <v-col cols="4" v-for="ix in 3" v-bind:key="ix"
             ><v-img
-              style="cursor: pointer"
-              @click="setSelectedImage(parseInt(selectedImg.ix) + ix)"
+            :class = "'clickable'"
+              @click="setSelectedImage(parseInt(selectedImg.ix) + ix-1)"
               contain
               sizes="200px"
               width="100%"
-              height="25vh"
-              :src="getSelectedImage(parseInt(selectedImg.ix) + ix).src.medium"
+              height="20vh"
+              :src="getSelectedImage(parseInt(selectedImg.ix) + ix-1).src.medium"
             ></v-img
           ></v-col>
         </v-row>
       </v-col>
     </v-row>
+     <v-row style="height: 5vh;"></v-row>
   </v-app>
 </template>
 
@@ -131,7 +134,10 @@ export default {
         return this.imageSrcArr[delta];
       } else return this.imageSrcArr[ix];
     },
-
+    goTo(url)
+    {
+      window.open(url, '_blank').focus();
+    }, 
     setSelectedImage(ix) {
       if (ix >= this.imageSrcArr.length) {
         // when index of requested img is above list lenght
@@ -147,3 +153,11 @@ export default {
   },
 };
 </script>
+
+<style scoped> 
+
+.clickable
+{
+    cursor: pointer;
+}
+</style>
