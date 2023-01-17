@@ -67,9 +67,9 @@
         <v-row>
           <v-col cols="4" v-for="ix in 3" v-bind:key="ix"
             ><v-img
-            :class = "'clickable'"
+              :class="ix==1?'clickable red-borders':'clickable'"
               @click="setSelectedImage(parseInt(selectedImg.ix) + ix-1)"
-              contain
+              
               sizes="200px"
               width="100%"
               height="20vh"
@@ -159,5 +159,10 @@ export default {
 .clickable
 {
     cursor: pointer;
+}
+.red-borders
+{
+  border:2px solid; 
+  border-color: red;
 }
 </style>
