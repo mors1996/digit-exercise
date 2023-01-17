@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-row>
-      <v-col cols="4"  class="black" style="overflow-y:scroll; height:100vh">
+      <v-col cols="4" class="black" style="overflow-y: scroll; height: 100vh">
         <v-row v-for="(img, ix) in imageSrcArr" v-bind:key="ix">
           <v-spacer></v-spacer>
           <v-col>
@@ -14,7 +14,7 @@
               Image {{ ix }}
             </v-btn>
             <v-btn
-              class="red"
+              class="white"
               v-if="selectedImg == imageSrcArr[ix]"
               style="width: 80%"
             >
@@ -23,8 +23,33 @@
           ><v-spacer></v-spacer>
         </v-row>
       </v-col>
-      <v-col cols="8" class="red">
-        <v-row><v-toolbar><v-toolbar-title class="mx-auto">{{selectedImg.photographer==null?"No photographer":selectedImg.photographer}}</v-toolbar-title></v-toolbar></v-row>
+      <v-col cols="8" class="grey">
+        <v-row
+          ><v-toolbar
+            ><v-toolbar-title class="mx-auto"><a :href="selectedImg.photographerUrl">{{
+              selectedImg.photographer == null
+                ? "No photographer"
+                : selectedImg.photographer
+            }}</a></v-toolbar-title></v-toolbar
+          ></v-row
+        >
+        <v-row
+          >
+          <v-spacer></v-spacer><v-col cols="8">
+            <v-text-field
+              color="white"
+              append-icon="mdi-magnify"
+              label="Search topic"
+              :placeholder="searchTopic"
+              v-model="searchTopic"
+              outlined
+              dense
+              clearable
+              @click:append="retrieveImages"
+              @keydown.enter="retrieveImages"
+              
+            ></v-text-field></v-col
+        ><v-spacer></v-spacer></v-row>
         <v-row>
           <v-spacer></v-spacer>
           <v-col cols="8"
@@ -40,7 +65,7 @@
         <v-row>
           <v-col cols="4" v-for="ix in 3" v-bind:key="ix"
             ><v-img
-            style="cursor: pointer;"
+              style="cursor: pointer"
               @click="setSelectedImage(parseInt(selectedImg.ix) + ix)"
               contain
               sizes="200px"
@@ -97,29 +122,26 @@ export default {
         .finally(() => (this.loading = false));
     },
 
-
-    getSelectedImage(ix)
-    {
-     // console.log(ix)
-      if (ix>=this.imageSrcArr.length) // when index of requested img is above list lenght
-      { var delta = ix - this.imageSrcArr.length //
-      console.log(delta)
-        return this.imageSrcArr[delta]
-      }
-      else 
-      return this.imageSrcArr[ix]
+    getSelectedImage(ix) {
+      // console.log(ix)
+      if (ix >= this.imageSrcArr.length) {
+        // when index of requested img is above list lenght
+        var delta = ix - this.imageSrcArr.length; //
+        console.log(delta);
+        return this.imageSrcArr[delta];
+      } else return this.imageSrcArr[ix];
     },
 
     setSelectedImage(ix) {
-      if (ix>=this.imageSrcArr.length) // when index of requested img is above list lenght
-      { var delta = ix - this.imageSrcArr.length //
-      console.log(delta)
-      this.selectedImg = this.imageSrcArr[delta];
-      this.selectedImg.ix = delta; 
-      }
-      else {
-      this.selectedImg = this.imageSrcArr[ix];
-      this.selectedImg.ix = ix; // to be used for retrieving current image index referencing parent list
+      if (ix >= this.imageSrcArr.length) {
+        // when index of requested img is above list lenght
+        var delta = ix - this.imageSrcArr.length; //
+        console.log(delta);
+        this.selectedImg = this.imageSrcArr[delta];
+        this.selectedImg.ix = delta;
+      } else {
+        this.selectedImg = this.imageSrcArr[ix];
+        this.selectedImg.ix = ix; // to be used for retrieving current image index referencing parent list
       }
     },
   },
